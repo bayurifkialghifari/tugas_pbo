@@ -15,7 +15,6 @@ public class Connection extends database {
     public PreparedStatement ps;
     public java.sql.Connection conn;
     public ResultSet rs;
-    public String sql = "";
     private String url;
     
     public void connect()
