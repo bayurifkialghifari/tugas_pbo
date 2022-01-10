@@ -1,6 +1,7 @@
 package pointofsale;
 
-import java.sql.*;
+import core.Connection;
+import java.sql.SQLException;
 
 public class Main {
     
@@ -8,26 +9,17 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String username = "root";
-        String password = "";
-        String database = "worketic";
-        String url = "jdbc:mysql://localhost:3306/";
+        
+        Connection cc = new Connection();
+        
+        cc.connect();
         
         try
         {
+            cc.ps = cc.conn.prepareStatement("select * from users");
+            cc.rs = cc.ps.executeQuery();
             
-            Class.forName("com.mysql.jdbc.Driver");
-        
-            url += database;
-            
-            Connection conn = DriverManager.getConnection(url, username, password);
-            
-            PreparedStatement sql = null;
-            sql = conn.prepareStatement("select * from users");
-            
-            ResultSet rs = sql.executeQuery();
-            
-            while(rs.next())
+            while(cc.rs.next())
             {
                 System.out.println("1");
             }
@@ -35,10 +27,6 @@ public class Main {
         catch(SQLException e)
         {
             System.out.print(e.toString());
-        }
-        catch(ClassNotFoundException e)
-        {
-            System.out.print("JDBC Class Not Found");
         }
     } 
 }

@@ -5,10 +5,36 @@
  */
 package core;
 
+import java.sql.*;
+import config.database;
 /**
  *
  * @author AXIOO
  */
-public class Connection {
+public class Connection extends database {
+    public PreparedStatement ps;
+    public java.sql.Connection conn;
+    public ResultSet rs;
+    public String sql = "";
+    private String url;
     
+    public void connect()
+    {
+        this.url = "jdbc:mysql://"+this.get_host()+":"+this.get_port()+"/"+this.get_database();
+        
+        try 
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            this.conn = DriverManager.getConnection(this.url, this.get_username(), this.get_password());
+        } 
+        catch(SQLException e) 
+        {
+            System.out.print(e.toString());
+        }
+        catch(ClassNotFoundException e)
+        {
+            System.out.println("JDBC Class Not Found");
+        }
+    }
 }

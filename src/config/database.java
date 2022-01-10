@@ -15,7 +15,7 @@ public class database {
     private String port = "3306";
     private String username = "root";
     private String password = "";
-    private String database = "";
+    private String database = "worketic";
     
     protected String get_host()
     {
@@ -39,7 +39,7 @@ public class database {
     
     protected String get_database()
     {
-        return this.password;
+        return this.database;
     }
     
     protected void set_host(String host)       
