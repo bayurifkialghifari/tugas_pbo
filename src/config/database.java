@@ -15,7 +15,7 @@ public class database {
     private String port = "3306";
     private String username = "root";
     private String password = "";
-    private String database = "worketic";
+    private String database = "java_orm_test";
     
     protected String get_host()
     {

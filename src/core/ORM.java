@@ -15,15 +15,15 @@ public class ORM extends Connection {
     private String sql_builder = "";
     private int i;
     
-    protected String get_table()
+    public String get_table()
     {
         String child = this.getClass().getName();
-        String[] childs = sql_builder.split("\\.", 0);
+        String[] childs = child.split("\\.", 0);
         
         return childs[1];
     }
     
-    protected String insert(String[] field, String[] data)
+    public String insert(String[] field, String[] data)
     {
         this.connect();
         
@@ -60,6 +60,9 @@ public class ORM extends Connection {
                 this.ps.setString(this.i + 1, data[i]);
             }
             
+            // Execute the query            
+            this.ps.executeUpdate();
+            
             return this.sql_builder;
         }
         catch(SQLException e)
@@ -67,4 +70,5 @@ public class ORM extends Connection {
             return e.toString();
         }
     }
+    
 }
