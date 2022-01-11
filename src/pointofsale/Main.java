@@ -13,8 +13,10 @@ public class Main {
         
         test tst = new test();
         String [] field = {"nama", "umur", "alamat"};
-        String [] value = {"Ujang", "12", "Rumah"};
-        tst.insert(field, value);
+        String [] value = {"Ujang", "15", "Sekolah"};
+        //tst.insert(field, value);
+        //tst.update(field, value, "id", "1");
+        
 //        Connection cc = new Connection();
 //        
 //        cc.connect();

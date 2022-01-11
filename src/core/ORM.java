@@ -71,4 +71,46 @@ public class ORM extends Connection {
         }
     }
     
+    public String update(String[] field, String[] data, String where, String value_where)
+    {
+        this.connect();
+        
+        try
+        {            
+            this.sql_builder = "update "+this.get_table()+" set ";
+            
+            // Set field name to update           
+            for(this.i = 0;this.i < field.length;this.i++)
+            {
+                if(this.i == (field.length - 1))
+                    this.sql_builder += field[this.i] + " = ? ";
+                else
+                    this.sql_builder += field[this.i] + " = ?, ";
+            }
+            
+            // Set where            
+            this.sql_builder += "where "+where+" = ?";
+            
+            // Prepare the query            
+            this.ps = this.conn.prepareStatement(this.sql_builder);
+            
+            // fill the field
+            for(this.i = 0;this.i < data.length;this.i++)
+            {
+                this.ps.setString(this.i + 1, data[i]);
+            }
+            
+            this.ps.setString(this.i + 1, value_where);
+            
+            // Execute the query            
+            this.ps.executeUpdate();
+            
+            return this.sql_builder;
+        }
+        catch(SQLException e)
+        {
+            return e.toString();
+        }
+    }
+    
 }
