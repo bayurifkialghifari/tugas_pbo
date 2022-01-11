@@ -113,4 +113,28 @@ public class ORM extends Connection {
         }
     }
     
+    public String delete(String where, String value_where)
+    {
+        this.connect();
+        
+        try
+        {            
+            this.sql_builder = "delete from "+this.get_table()+" where "+where+"=?";
+            
+            // Prepare the query            
+            this.ps = this.conn.prepareStatement(this.sql_builder);
+            
+            this.ps.setString(1, value_where);
+            
+            // Execute the query            
+            this.ps.executeUpdate();
+            
+            return this.sql_builder;
+        }
+        catch(SQLException e)
+        {
+            return e.toString();
+        }
+    }
+    
 }

@@ -16,6 +16,7 @@ public class Main {
         String [] value = {"Ujang", "15", "Sekolah"};
         //tst.insert(field, value);
         //tst.update(field, value, "id", "1");
+        tst.delete("id", "1");
         
 //        Connection cc = new Connection();
 //        
