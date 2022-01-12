@@ -4,7 +4,6 @@ import core.Connection;
 import model.test;
 import java.sql.SQLException;
 import javax.sql.rowset.CachedRowSet;
-import javax.sql.rowset.RowSetProvider;
 
 public class Main {
     
@@ -15,11 +14,12 @@ public class Main {
         
         test tst = new test();
         String [] field = {"nama", "umur", "alamat"};
-        String [] value = {"Ujang", "15", "Sekolah"};
+        String [] value = {"Ahmat", "15", "Sekolah"};
         //tst.insert(field, value);
-        //tst.update(field, value, "id", "1");
+        //tst.update(field, value, "id", "3");
         //tst.delete("id", "1");
         CachedRowSet crs = tst.all();
+        
         while(crs.next())
         {
             System.out.print(crs.getString("nama"));
