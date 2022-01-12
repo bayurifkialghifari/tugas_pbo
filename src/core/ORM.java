@@ -217,4 +217,56 @@ public class ORM extends Connection {
         }
     }
     
+    public CachedRowSet select_join_all(String select, String join) throws SQLException
+    {
+        this.connect();
+        
+        CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+        
+        try
+        {            
+            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join;
+            
+            // Create statement       
+            this.st = this.conn.createStatement();
+            // Execute statement            
+            this.rs = this.st.executeQuery(this.sql_builder);
+
+            // Create Result
+            crs.populate(this.rs);
+            
+            return crs;
+        }
+        catch(SQLException e)
+        {
+            return crs;
+        }
+    }
+    
+    public CachedRowSet select_join_where(String select, String join, String where, String value_where) throws SQLException
+    {
+        this.connect();
+        
+        CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+        
+        try
+        {            
+            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where = '"+value_where+"'";
+            
+            // Create statement       
+            this.st = this.conn.createStatement();
+            // Execute statement            
+            this.rs = this.st.executeQuery(this.sql_builder);
+
+            // Create Result
+            crs.populate(this.rs);
+            
+            return crs;
+        }
+        catch(SQLException e)
+        {
+            return crs;
+        }
+    }
+    
 }
