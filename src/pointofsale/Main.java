@@ -1,7 +1,7 @@
 package pointofsale;
 
 import core.Connection;
-import model.test;
+import model.menu;
 import java.sql.SQLException;
 import javax.sql.rowset.CachedRowSet;
 
@@ -12,7 +12,7 @@ public class Main {
      */
     public static void main(String[] args) throws SQLException {
         
-        test tst = new test();
+        menu tst = new menu();
         String [] field = {"nama", "umur", "alamat"};
         String [] value = {"Ahmat", "15", "Sekolah"};
         //tst.insert(field, value);

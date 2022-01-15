@@ -10,6 +10,6 @@ import core.ORM;
  *
  * @author AXIOO
  */
-public class test extends ORM {
+public class menu extends ORM {
     
 }
