@@ -199,7 +199,7 @@ public class ORM extends Connection {
         
         try
         {            
-            this.sql_builder = "select "+select+" from "+this.get_table()+" where = '"+value_where+"'";
+            this.sql_builder = "select "+select+" from "+this.get_table()+" where "+where+" = '"+value_where+"'";
             
             // Create statement       
             this.st = this.conn.createStatement();
@@ -251,7 +251,7 @@ public class ORM extends Connection {
         
         try
         {            
-            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where = '"+value_where+"'";
+            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where "+where+" = '"+value_where+"'";
             
             // Create statement       
             this.st = this.conn.createStatement();
