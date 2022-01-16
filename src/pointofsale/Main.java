@@ -23,6 +23,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
         // CachedRowSet
         CachedRowSet crs;
+        
         do
         {
             if(!auth.isLoggedIn)
@@ -35,6 +36,7 @@ public class Main {
                     if(!crs.getString("menu_class").equals("home"))
                         System.out.println(crs.getString("menu_index") + " " + crs.getString("menu_name"));
                 }
+                
                 input.nextInt();
             }
         }
