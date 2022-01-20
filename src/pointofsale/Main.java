@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import javax.sql.rowset.CachedRowSet;
 import middleware.authentication;
+import library.output;
 import model.menu;
 
 public class Main {
@@ -16,6 +17,8 @@ public class Main {
         // Exit
         boolean exit = false;
         
+        // Output library
+        output out = new output();
         // Authentication middleware
         authentication auth = new authentication();
         // Menu show
@@ -41,27 +44,30 @@ public class Main {
                 i = 0;
                 
                 // Label
-                System.out.println("Silakan pilih salah satu menu yang ada di bawah ini");
+                out.println("Silakan pilih salah satu menu yang ada di bawah ini");
                 
                 while(crs.next())
                 {
-                    menu_list[i+1] = crs.getString("menu_name");
+                    menu_list[i+1] = crs.getString("menu_id");
                     i++;
                     
-                    System.out.println(crs.getString("menu_index") + ". " + crs.getString("menu_name"));
+                    out.println(crs.getString("menu_index") + ". " + crs.getString("menu_name"));
                 }
                 
-                System.out.println(i+1 + ". Keluar \n");
+                out.println(i+1 + ". Keluar \n");
                 
-                System.out.println("Pilihan anda ?");
+                out.println("Pilihan anda ?");
                 
                 select_menu = input.nextInt();
                 
                 // Check exit
                 exit = select_menu == (i+1) ? true : false;
                 
+                // Clear screen
+                out.cls();
+                
                 if(!exit)
-                    System.out.println(menu_list[select_menu]);
+                    out.println(menu_list[select_menu]);
             }
         }
         while(!exit);

@@ -5,14 +5,17 @@
  */
 package controller;
 
+import library.output;
 /**
  *
  * @author AXIOO
  */
 public class menu {
     
+    output out = new output();
+    
     public void test()
     {
-        System.out.print("Test");
+        out.print("Test");
     }
 }
