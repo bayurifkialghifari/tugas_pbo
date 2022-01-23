@@ -36,6 +36,7 @@ public class Main {
         
         do
         {
+            out.println(auth.isLoggedIn ? "true" : "false");
             if(!auth.isLoggedIn)
             {
                 // Show login and register menu                
@@ -48,7 +49,7 @@ public class Main {
                 
                 while(crs.next())
                 {
-                    menu_list[i+1] = crs.getString("menu_name");
+                    menu_list[i+1] = crs.getString("menu_id");
                     i++;
                     
                     out.println(crs.getString("menu_index") + ". " + crs.getString("menu_name"));
@@ -67,7 +68,17 @@ public class Main {
                 out.cls();
                 
                 if(!exit && select_menu < i+1)
-                    out.println(menu_list[select_menu]);
+                {
+                    crs = menu.select_where("*", "menu_id", menu_list[select_menu], "");
+                    
+                    while(crs.next())
+                    {
+                        Class classRef = Class.forName("controller." + crs.getString("menu_class"));
+                        Object instance = classRef.newInstance();
+                        Method method = classRef.getDeclaredMethod(crs.getString("menu_function"));
+                        method.invoke(instance);
+                    }
+                }
                 else if(select_menu > i+1)
                     out.println("Masukan yang anda masukan salah !! \n");
                 else if(exit)
