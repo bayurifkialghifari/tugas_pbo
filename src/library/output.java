@@ -5,16 +5,21 @@
  */
 package library;
 
+import java.io.IOException;
+
 /**
  *
  * @author AXIOO
  */
 public class output {
     
-    public void cls()
+    public void cls() throws Exception 
     {
         System.out.print("\033[H\033[2J");  
         System.out.flush(); 
+        
+        
+        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();  
     }
     
     public void println(String message)
