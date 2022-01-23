@@ -48,7 +48,7 @@ public class Main {
                 
                 while(crs.next())
                 {
-                    menu_list[i+1] = crs.getString("menu_id");
+                    menu_list[i+1] = crs.getString("menu_name");
                     i++;
                     
                     out.println(crs.getString("menu_index") + ". " + crs.getString("menu_name"));
@@ -66,8 +66,12 @@ public class Main {
                 // Clear screen
                 out.cls();
                 
-                if(!exit)
+                if(!exit && select_menu < i+1)
                     out.println(menu_list[select_menu]);
+                else if(select_menu > i+1)
+                    out.println("Masukan yang anda masukan salah !! \n");
+                else if(exit)
+                    out.print("Aplikasi berhasil di tutup");
             }
         }
         while(!exit);
