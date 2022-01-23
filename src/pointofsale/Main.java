@@ -36,7 +36,6 @@ public class Main {
         
         do
         {
-            out.println(auth.isLoggedIn ? "true" : "false");
             if(!auth.isLoggedIn)
             {
                 // Show login and register menu                
@@ -83,6 +82,12 @@ public class Main {
                     out.println("Masukan yang anda masukan salah !! \n");
                 else if(exit)
                     out.print("Aplikasi berhasil di tutup");
+            }
+            else
+            {
+                out.print("GGWP");
+                
+                input.next();
             }
         }
         while(!exit);

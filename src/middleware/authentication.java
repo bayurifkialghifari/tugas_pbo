@@ -21,7 +21,7 @@ public class authentication {
     user user = new user();
     CachedRowSet crs;
     
-    public boolean isLoggedIn = false;
+    public static boolean isLoggedIn = false;
     public String saltvalue = "GGWP";
     
     public void setLogged(boolean loged)
