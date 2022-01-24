@@ -20,7 +20,7 @@ public class Connection extends database {
     
     public void connect()
     {
-        this.url = "jdbc:mysql://"+this.get_host()+":"+this.get_port()+"/"+this.get_database();
+        this.url = "jdbc:mysql://"+this.get_host()+":"+this.get_port()+"/"+this.get_database()+"?autoReconnect=true&useSSL=false";
         
         try 
         {
