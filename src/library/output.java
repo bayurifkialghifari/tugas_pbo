@@ -18,8 +18,21 @@ public class output {
         System.out.print("\033[H\033[2J");  
         System.out.flush(); 
         
-        
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();  
+        try
+        {
+            String operatingSystem = System.getProperty("os.name");
+              
+            if(operatingSystem.contains("Windows"))
+            {        
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } 
+            else 
+            {
+                new ProcessBuilder("clear").inheritIO().start().waitFor();
+            } 
+        }catch(Exception e){
+            System.out.println(e);
+        }  
     }
     
     public void println(String message)
