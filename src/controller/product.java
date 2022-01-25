@@ -90,22 +90,24 @@ public class product {
             
             // Label            
             out.println(" ======================================================");
-            out.println(" | No |   Nama Produk   |  Harga Produk  |  Quantity  |");
+            out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
             
             while(crs.next())
             {
                 this.i++;
                     
                 String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
+                int length_id = "  Id  |".length();
                 int length_name = "   Nama Produk   |".length();
                 int length_price = "  Harga Produk  |".length();
                 int length_qty = "  Quantity  |".length();
                 
+                String id = str.clear_string(crs.getString("prod_id"), length_id);
                 String name = str.clear_string(crs.getString("prod_name"), length_name);
                 String price = str.clear_string(crs.getString("prod_price"), length_price);
                 String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
                 
-                out.println(" | "+no+" |"+name+price+qty);
+                out.println(" | "+no+" |"+id+name+price+qty);
             }
             
             out.println(" ====================================================== \n");
