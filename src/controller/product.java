@@ -189,4 +189,32 @@ public class product {
         }
         while(!this.exit); 
     }
+     public void delete() throws Exception
+    {
+        do
+        {
+            prod.change_table();
+            
+            String nama;
+            int price, qty, id;
+            
+            this.i = 0;
+            
+            // Label            
+            out.println(" === Delete product === ");
+            out.print(" Id Product      : "); 
+            id = input.nextInt();
+ 
+            
+            // Create data
+            prod.delete( "prod_id", String.valueOf(id));
+            
+            // Label
+            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            input.nextInt();
+            
+            this.exit = true;
+        }
+        while(!this.exit); 
+    }
 }
