@@ -15,6 +15,7 @@ import javax.sql.rowset.RowSetProvider;
 public class ORM extends Connection {
     
     private String sql_builder = "";
+    private String table = "";
     private int i;
     
     public String get_table()
@@ -22,7 +23,12 @@ public class ORM extends Connection {
         String child = this.getClass().getName();
         String[] childs = child.split("\\.", 0);
         
-        return childs[1];
+        return this.table == "" ? childs[1] : this.table;
+    }
+    
+    public void set_table(String table)
+    {
+        this.table = table;
     }
     
     public String insert(String[] field, String[] data)

@@ -84,9 +84,50 @@ public class Main {
             }
             else
             {
-                out.print("GGWP");
+                // Show login and register menu                
+                crs = menu.select_where("*", "menu_menu_id", "7", "");
                 
-                input.next();
+                i = 0;
+                
+                // Label
+                out.println("Silakan pilih salah satu menu yang ada di bawah ini");
+                
+                while(crs.next())
+                {
+                    menu_list[i+1] = crs.getString("menu_id");
+                    i++;
+                    
+                    out.println(crs.getString("menu_index") + ". " + crs.getString("menu_name"));
+                }
+                
+                out.println(i+1 + ". Keluar \n");
+                
+                out.println("Pilihan anda ?");
+                
+                select_menu = input.nextInt();
+                
+                // Check exit
+                exit = select_menu == (i+1) ? true : false;
+                
+                // Clear screen
+                out.cls();
+                
+                if(!exit && select_menu < i+1)
+                {
+                    crs = menu.select_where("*", "menu_id", menu_list[select_menu], "");
+                    
+                    while(crs.next())
+                    {
+                        Class classRef = Class.forName("controller." + crs.getString("menu_class"));
+                        Object instance = classRef.newInstance();
+                        Method method = classRef.getDeclaredMethod(crs.getString("menu_function"));
+                        method.invoke(instance);
+                    }
+                }
+                else if(select_menu > i+1)
+                    out.println("Masukan yang anda masukan salah !! \n");
+                else if(exit)
+                    out.print("Aplikasi berhasil di tutup");
             }
         }
         while(!exit);
