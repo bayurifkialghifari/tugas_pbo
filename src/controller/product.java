@@ -219,4 +219,51 @@ public class product {
         }
         while(!this.exit); 
     }
+     
+     public void search() throws Exception
+    {
+        do
+        {
+            prod.change_table();
+            
+            // Show data prodcut           
+            out.println(" === Search product === ");
+            out.print(" Cari : ");
+            String value = input.next();
+            
+            crs = prod.select_where("*", "1", "1", " or prod_name like '%" + value +"%' or prod_id like '%" + value + "%'");
+            
+            this.i = 0;
+            
+            // Label            
+            out.println(" ======================================================");
+            out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
+            
+            while(crs.next())
+            {
+                this.i++;
+                    
+                String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
+                int length_id = "  Id  |".length();
+                int length_name = "   Nama Produk   |".length();
+                int length_price = "  Harga Produk  |".length();
+                int length_qty = "  Quantity  |".length();
+                
+                String id = str.clear_string(crs.getString("prod_id"), length_id);
+                String name = str.clear_string(crs.getString("prod_name"), length_name);
+                String price = str.clear_string(crs.getString("prod_price"), length_price);
+                String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
+                
+                out.println(" | "+no+" |"+id+name+price+qty);
+            }
+            
+            out.println(" ====================================================== \n");
+                
+            // Label
+            out.println("Masukan sembarang angka untuk kembali !");
+            input.nextInt();
+            this.exit = true;
+        }
+        while(!this.exit);
+    }
 }
