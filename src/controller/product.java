@@ -152,4 +152,41 @@ public class product {
         }
         while(!this.exit);
     }
+     
+    public void update() throws Exception
+    {
+        do
+        {
+            prod.change_table();
+            
+            String nama;
+            int price, qty, id;
+            
+            this.i = 0;
+            
+            // Label            
+            out.println(" === Update product === ");
+            out.print(" Id Product      : "); 
+            id = input.nextInt();
+            out.print("\n Nama Product  : ");
+            nama = input.next();
+            out.print("\n Harga Product : ");
+            price = input.nextInt();
+            out.print("\n Stok          : ");
+            qty = input.nextInt();
+            
+            // Create data
+            String [] field = {"prod_name", "prod_price", "prod_qty"};
+            String [] data = {nama, String.valueOf(price), String.valueOf(qty)};
+            
+            prod.update(field, data, "prod_id", String.valueOf(id));
+            
+            // Label
+            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            input.nextInt();
+            
+            this.exit = true;
+        }
+        while(!this.exit); 
+    }
 }
