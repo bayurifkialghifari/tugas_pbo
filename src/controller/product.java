@@ -83,13 +83,13 @@ public class product {
         {
             prod.change_table();
             
-            // Show login and register menu                
+            // Show data prodcut             
             crs = prod.select_where("*", "1", "1", "");
             
             this.i = 0;
             
             // Label            
-            out.println(" =========================================================");
+            out.println(" ======================================================");
             out.println(" | No |   Nama Produk   |  Harga Produk  |  Quantity  |");
             
             while(crs.next())
@@ -108,11 +108,46 @@ public class product {
                 out.println(" | "+no+" |"+name+price+qty);
             }
             
-            out.println(" ========================================================= \n");
+            out.println(" ====================================================== \n");
                 
             // Label
             out.println("Masukan sembarang angka untuk kembali !");
             input.nextInt();
+            this.exit = true;
+        }
+        while(!this.exit);
+    }
+    
+    public void create() throws Exception
+    {
+         do
+        {
+            prod.change_table();
+            
+            String nama;
+            int price, qty;
+            
+            this.i = 0;
+            
+            // Label            
+            out.println(" === Create product === ");
+            out.print(" Nama Product  : ");
+            nama = input.next();
+            out.print("\n Harga Product : ");
+            price = input.nextInt();
+            out.print("\n Stok          : ");
+            qty = input.nextInt();
+            
+            // Create data
+            String [] field = {"prod_name", "prod_price", "prod_qty"};
+            String [] data = {nama, String.valueOf(price), String.valueOf(qty)};
+            
+            prod.insert(field, data);
+            
+            // Label
+            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            input.nextInt();
+            
             this.exit = true;
         }
         while(!this.exit);
