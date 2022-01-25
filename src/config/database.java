@@ -16,7 +16,7 @@ public class database {
     private String username = "root";
     // Windows private String password = "";
     // Mac private String password = "12345678910";
-    private String password = "12345678910";
+    private String password = "";
     private String database = "pbo_point_of_sale";
     
     protected String get_host()
