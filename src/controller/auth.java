@@ -28,7 +28,7 @@ public class auth {
     {
         do
         {
-            out.println("=====Point Of Sale=====");
+            out.println("\n=====Point Of Sale=====");
             out.println("======== Login ========");
             out.print("Username : "); 
             this.username = input.next();
@@ -51,6 +51,19 @@ public class auth {
                 out.cls();
                 
                 out.println("Username atau password yang anda masukan salah !! \n");
+                out.println("Masukan angka 1 untuk login kembali");
+                out.println("Atau masukan sembarang angka untuk kembali ke menu utama !!");
+                
+                out.println("Pilihan anda ?");
+                
+                int option = input.nextInt();
+                if(option == 1)
+                    this.exit = false;
+                else
+                    this.exit = true;
+                
+                // Clear screen
+                out.cls();
             }
         }
         while(!exit);
