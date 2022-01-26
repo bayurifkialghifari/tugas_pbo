@@ -209,7 +209,7 @@ public class purchase {
             
             // Label
             out.println("Data berhasil di buat !");
-            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
             input.nextInt();
             
             this.exit = true;
@@ -371,9 +371,115 @@ public class purchase {
             
             // Label
             out.println("Data berhasil di buat !");
-            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
             input.nextInt();
             
+            this.exit = true;
+        }
+        while(!this.exit);
+    }
+    
+    public void delete() throws Exception
+    {
+        do
+        {
+            pur.change_table();
+            
+            boolean isFind = false;
+            String id = "";
+            
+            this.i = 0;
+            
+            // Find the data
+            do
+            {   
+                // Label            
+                out.println(" === Hapus Pembelian === ");
+                out.print(" Id / Kode Pembelian       : "); 
+                id = input.next();
+                
+                // Find data by id
+                crs = pur.select_join_where("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", " purch_id", id, " or pruch_code = '" + id + "' ");
+                
+                // Print data
+                this.print_data(crs);
+                
+                // Check is find or not
+                if(this.i > 0)
+                {
+                    this.i = 0;
+                    out.println("Apakah data ini yang ingin anda hapus ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        crs = pur.select_where("*", "purch_id", id, " or pruch_code = '" + id + "' ");
+                        
+                        while(crs.next())
+                        {
+                            id = crs.getString("purch_id");
+                        }
+                        isFind = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Data tidak tidak di temukan !! \n");
+                    
+                    isFind = false;
+                }
+            }
+            while(!isFind);
+ 
+            // Restore Stok
+            this.restoreStok(id);
+            
+            // Delete data
+            pur.delete( "purch_id", id);
+            
+            // Label
+            out.println("Data berhasil di hapus ! \n");
+            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
+            input.nextInt();
+            
+            this.exit = true;
+        }
+        while(!this.exit); 
+    }
+    
+    public void search() throws Exception
+    {
+        do
+        {
+            pur.change_table();
+            
+            // Show data prodcut           
+            out.println(" === Cari pembelian === ");
+            out.print(" Cari : ");
+            String value = input.next();
+            
+            String like = " purch_id like '%"+value+"%' or user_name like '%"+value+"%' or prod_name like '%"+value+"%' or pruch_code like '%"+value+"%'";
+            crs = pur.select_join_like("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", like);
+            
+            this.i = 0;
+            
+            // Print data
+            this.print_data(crs);
+                
+            // Label
+            out.println("Masukan sembarang angka untuk kembali !");
+            input.nextInt();
             this.exit = true;
         }
         while(!this.exit);
