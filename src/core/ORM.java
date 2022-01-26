@@ -223,6 +223,32 @@ public class ORM extends Connection {
         }
     }
     
+    public CachedRowSet select_like(String select, String like) throws SQLException
+    {
+        this.connect();
+        
+        CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+        
+        try
+        {            
+            this.sql_builder = "select "+select+" from "+this.get_table()+" where " + like;
+            
+            // Create statement       
+            this.st = this.conn.createStatement();
+            // Execute statement            
+            this.rs = this.st.executeQuery(this.sql_builder);
+
+            // Create Result
+            crs.populate(this.rs);
+            
+            return crs;
+        }
+        catch(SQLException e)
+        {
+            return crs;
+        }
+    }
+    
     public CachedRowSet select_join_all(String select, String join) throws SQLException
     {
         this.connect();
@@ -258,6 +284,32 @@ public class ORM extends Connection {
         try
         {            
             this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where "+where+" = '"+value_where+"'";
+            
+            // Create statement       
+            this.st = this.conn.createStatement();
+            // Execute statement            
+            this.rs = this.st.executeQuery(this.sql_builder);
+
+            // Create Result
+            crs.populate(this.rs);
+            
+            return crs;
+        }
+        catch(SQLException e)
+        {
+            return crs;
+        }
+    }
+    
+    public CachedRowSet select_join_like(String select, String join, String like) throws SQLException
+    {
+        this.connect();
+        
+        CachedRowSet crs = RowSetProvider.newFactory().createCachedRowSet();
+        
+        try
+        {            
+            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where "+like;
             
             // Create statement       
             this.st = this.conn.createStatement();

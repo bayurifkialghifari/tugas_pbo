@@ -298,7 +298,7 @@ public class product {
             out.print(" Cari : ");
             String value = input.next();
             
-            crs = prod.select_where("*", "1", "1", " or prod_name like '%" + value +"%' or prod_id like '%" + value + "%'");
+            crs = prod.select_like("*", " prod_name like '%" + value +"%' or prod_id like '%" + value + "%'");
             
             this.i = 0;
             
