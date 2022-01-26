@@ -21,7 +21,7 @@ public class product {
     strings str = new strings();
     products prod = new products();
     menu menu = new menu();
-    Scanner input = new Scanner(System.in).useDelimiter("\n");;
+    Scanner input = new Scanner(System.in).useDelimiter("\n");
     CachedRowSet crs;
     public boolean exit = false;
     public int i, select_menu;
@@ -111,7 +111,7 @@ public class product {
             this.i = 0;
             
             // Label            
-            out.println(" === Create product === ");
+            out.println(" === Buat produk baru === ");
             out.print(" Nama Product  : ");
             nama = input.next();
             out.print("\n Harga Product : ");
@@ -126,6 +126,7 @@ public class product {
             prod.insert(field, data);
             
             // Label
+            out.println("Data berhasil di buat !");
             out.println("Masukan sembarang angka untuk kembali ke menu product !");
             input.nextInt();
             
@@ -150,8 +151,8 @@ public class product {
             do
             {   
                 // Label            
-                out.println(" === Update product === ");
-                out.print(" Id Product      : "); 
+                out.println(" === Ubah produk === ");
+                out.print(" Id Produk       : "); 
                 id = input.nextInt();
                 
                 // Find data by id
@@ -192,9 +193,9 @@ public class product {
             }
             while(!isFind);
             
-            out.print("\n Nama Product  : ");
+            out.print("\n Nama Produk   : ");
             nama = input.next();
-            out.print("\n Harga Product : ");
+            out.print("\n Harga Produk  : ");
             price = input.nextInt();
             out.print("\n Stok          : ");
             qty = input.nextInt();
@@ -231,8 +232,8 @@ public class product {
             do
             {   
                 // Label            
-                out.println(" === Delete product === ");
-                out.print(" Id Product      : "); 
+                out.println(" === Hapus produk === ");
+                out.print(" Id Produk       : "); 
                 id = input.nextInt();
                 
                 // Find data by id
@@ -294,7 +295,7 @@ public class product {
             prod.change_table();
             
             // Show data prodcut           
-            out.println(" === Search product === ");
+            out.println(" === Cari produk === ");
             out.print(" Cari : ");
             String value = input.next();
             

@@ -5,11 +5,14 @@
 package controller;
 
 import java.lang.reflect.*;
-import java.util.Scanner;
+import java.text.*;
+import java.util.*;
 import javax.sql.rowset.CachedRowSet;
 import library.output;
 import library.strings;
+import middleware.authentication;
 import model.purchases;
+import model.products;
 import model.menu;
 
 /**
@@ -21,8 +24,10 @@ public class purchase {
     output out = new output();
     strings str = new strings();
     purchases pur = new purchases();
+    products prod = new products();
     menu menu = new menu();
-    Scanner input = new Scanner(System.in).useDelimiter("\n");;
+    Scanner input = new Scanner(System.in).useDelimiter("\n");
+    authentication auth = new authentication();
     CachedRowSet crs;
     public boolean exit = false;
     public int i, select_menu;
@@ -100,6 +105,118 @@ public class purchase {
         while(!this.exit);
     }
     
+    public void create() throws Exception
+    {
+        do
+        {
+            prod.change_table();
+            pur.change_table();
+            
+            boolean isFind = false;
+            boolean isEnough = false;
+            String product, product_name = "", code, date;
+            int prod_id = 0, price = 0, qty = 0, bought = 0,total = 0;
+            
+            this.i = 0;
+            
+            do
+            {
+                // Label            
+                out.println(" === Buat pembelian === ");
+                out.print(" Id Product / Nama Produk  : ");
+                product = input.next();
+                
+                crs = prod.select_where("*", "prod_id", product, " or prod_name = '" + product + "'");
+                
+                while(crs.next())
+                {
+                    this.i++;
+                    
+                    prod_id = crs.getInt("prod_id");
+                    product_name = crs.getString("prod_name");
+                    price = crs.getInt("prod_price");
+                    qty = crs.getInt("prod_qty");
+                }
+                
+                if(this.i > 0)
+                {
+                    crs = prod.select_where("*", "prod_id", product, " or prod_name = '" + product + "'");
+                    this.print_product(crs);
+                    
+                    this.i = 0;
+                    out.println("Apakah produk ini yang anda maksud ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        isFind = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Product tidak tidak di temukan !! \n");
+                    
+                    isFind = false;
+                }
+            }
+            while(!isFind);
+            
+            // Cukup
+            do
+            {
+                out.print("\n Product Name              : " + product_name);
+                out.print("\n Harga Produk              : " + String.valueOf(price));
+                out.print("\n Stok Tersedia             : " + String.valueOf(qty));
+                out.print("\n Yang ingin di beli        : ");
+                bought = input.nextInt();
+                total = bought * price; 
+                
+                if(bought > qty)
+                {
+                    out.println("Stok produk tidak cukup !! Masukan angka sesuai stok yang ada");
+                    
+                    isEnough = false;
+                }
+                else
+                {
+                    this.check_qty(prod_id, qty - bought);
+                    
+                    out.println("\n Total harga               : " + String.valueOf(total));
+                    isEnough = true;
+                }
+            }
+            while(!isEnough);
+            
+            
+            // Create data
+            String purch_code = "purch-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
+            String date_now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String [] field = {"pruch_user_id", "pruch_prod_id", "pruch_code", "purch_date", "purch_qty", "purch_price", "purch_total"};
+            String [] data = {String.valueOf(auth.getId()), String.valueOf(prod_id), purch_code, date_now, String.valueOf(bought), String.valueOf(price), String.valueOf(total)};
+            
+            pur.insert(field, data);
+            
+            // Label
+            out.println("Data berhasil di buat !");
+            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            input.nextInt();
+            
+            this.exit = true;
+        }
+        while(!this.exit);
+    }
+    
     public void print_data(CachedRowSet crs) throws Exception
     {
         // Label
@@ -135,5 +252,44 @@ public class purchase {
         }
             
         out.println(" =====================================================================================================\n");
+    }
+    
+    public void print_product(CachedRowSet crs) throws Exception
+    {
+        // Label
+        out.println(" =============================================================");
+        out.println(" |                        List Produk                        |");            
+        out.println(" =============================================================");
+        out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
+            
+        while(crs.next())
+        {
+            this.i++;
+                    
+            String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
+            int length_id = "  Id  |".length();
+            int length_name = "   Nama Produk   |".length();
+            int length_price = "  Harga Produk  |".length();
+            int length_qty = "  Quantity  |".length();
+                
+            String id = str.clear_string(crs.getString("prod_id"), length_id);
+            String name = str.clear_string(crs.getString("prod_name"), length_name);
+            String price = str.clear_string(crs.getString("prod_price"), length_price);
+            String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
+                
+            out.println(" | "+no+" |"+id+name+price+qty);
+        }
+            
+        out.println(" ============================================================= \n");
+    }
+    
+    public void check_qty(int id, int stok)
+    {
+        prod.change_table();
+        
+        String [] field = {"prod_qty"};
+        String [] data = {String.valueOf(stok)};
+        
+        prod.update(field, data, "prod_id", String.valueOf(id));
     }
 }

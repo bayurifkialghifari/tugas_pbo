@@ -6,9 +6,7 @@
 package middleware;
 
 
-import java.sql.SQLException;
 import model.user;
-import middleware.password_hash;
 import javax.sql.rowset.CachedRowSet;
 
 /**
@@ -22,11 +20,33 @@ public class authentication {
     CachedRowSet crs;
     
     public static boolean isLoggedIn = false;
+    public static int id_user = 0;
+    public static int id_role = 0;
     public String saltvalue = "GGWP";
     
     public void setLogged(boolean loged)
     {
         this.isLoggedIn = loged;
+    }
+    
+    public void setId(int id)
+    {
+        this.id_user = id;
+    }
+    
+    public void setRole(int role)
+    {
+        this.id_role = role;
+    }
+    
+    public int getId()
+    {
+        return this.id_user;
+    }
+    
+    public int getRole()
+    {
+        return this.id_role;
     }
     
     public boolean auth(String username, String password) throws Exception
@@ -39,6 +59,8 @@ public class authentication {
         {
             i++;
             
+            this.setId(crs.getInt("user_id"));
+            this.setRole(crs.getInt("user_role_id"));
             this.setLogged(hash.verifyUserPassword(password, crs.getString("user_password"), saltvalue));
         }
         
