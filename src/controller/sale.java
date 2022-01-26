@@ -11,19 +11,18 @@ import javax.sql.rowset.CachedRowSet;
 import library.output;
 import library.strings;
 import middleware.authentication;
-import model.purchases;
+import model.sales;
 import model.products;
 import model.menu;
-
 /**
  *
  * @author mac
  */
-public class purchase {
+public class sale {
     
     output out = new output();
     strings str = new strings();
-    purchases pur = new purchases();
+    sales sales  = new sales();
     products prod = new products();
     menu menu = new menu();
     Scanner input = new Scanner(System.in).useDelimiter("\n");
@@ -32,13 +31,13 @@ public class purchase {
     public boolean exit = false;
     public int i, select_menu;
     public String menu_list [] = new String [101];
-    
+
     public void index() throws Exception
     {
         do
         {
             // Show menu product
-            crs = menu.select_where("*", "menu_menu_id", "14", "");
+            crs = menu.select_where("*", "menu_menu_id", "20", "");
             
             this.i = 0;
                 
@@ -87,10 +86,10 @@ public class purchase {
     {
         do
         {
-            pur.change_table();
+            sales.change_table();
             
             // Show data prodcut             
-            crs = pur.select_join_all("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ");
+            crs = sales.select_join_all("*", " left join user on sale_user_id = user_id left join product on sale_prod_id = prod_id ");
             
             this.i = 0;
             
@@ -110,7 +109,7 @@ public class purchase {
         do
         {
             prod.change_table();
-            pur.change_table();
+            sales.change_table();
             
             boolean isFind = false;
             boolean isEnough = false;
@@ -122,7 +121,7 @@ public class purchase {
             do
             {
                 // Label            
-                out.println(" === Buat pembelian === ");
+                out.println(" === Buat Penjualan === ");
                 out.print(" Id Product / Nama Produk  : ");
                 product = input.next();
                 
@@ -190,7 +189,7 @@ public class purchase {
                 }
                 else
                 {
-                    this.check_qty(prod_id, qty + bought);
+                    this.check_qty(prod_id, qty - bought);
                     
                     out.println("\n Total harga               : " + String.valueOf(total));
                     isEnough = true;
@@ -200,16 +199,16 @@ public class purchase {
             
             
             // Create data
-            String purch_code = "purch-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
+            String purch_code = "sale-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
             String date_now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            String [] field = {"pruch_user_id", "pruch_prod_id", "pruch_code", "purch_date", "purch_qty", "purch_price", "purch_total"};
+            String [] field = {"sale_user_id", "sale_prod_id", "sale_code", "sale_date", "sale_qty", "sale_price", "sale_total"};
             String [] data = {String.valueOf(auth.getId()), String.valueOf(prod_id), purch_code, date_now, String.valueOf(bought), String.valueOf(price), String.valueOf(total)};
             
-            pur.insert(field, data);
+            sales.insert(field, data);
             
             // Label
             out.println("Data berhasil di buat !");
-            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
+            out.println("Masukan sembarang angka untuk kembali ke menu penjualan !");
             input.nextInt();
             
             this.exit = true;
@@ -222,7 +221,7 @@ public class purchase {
         do
         {
             prod.change_table();
-            pur.change_table();
+            sales.change_table();
             
             boolean isFind1 = false;
             boolean isFind2 = false;
@@ -239,18 +238,18 @@ public class purchase {
                 out.print(" Id / Kode Pembelian       : "); 
                 id = input.next();
                 
-                crs = pur.select_join_where("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", "purch_id", id, " or pruch_code = '" + id + "' ");
+                crs = sales.select_join_where("*", " left join user on sale_user_id = user_id left join product on sale_prod_id = prod_id ", "sale_id", id, " or sale_code = '" + id + "' ");
                 
                 this.print_data(crs);
                 
                 // Check is find or not
                 if(this.i > 0)
                 {
-                    crs = pur.select_where("*", "purch_id", id, " or pruch_code = '" + id + "' ");
+                    crs = sales.select_where("*", "sale_id", id, " or sale_code = '" + id + "' ");
                     
                     while(crs.next())
                     {
-                        id = crs.getString("purch_id");
+                        id = crs.getString("sale_id");
                     }
                     
                     this.i = 0;
@@ -351,7 +350,7 @@ public class purchase {
                 }
                 else
                 {
-                    this.check_qty(prod_id, qty + bought);
+                    this.check_qty(prod_id, qty - bought);
                     
                     out.println("\n Total harga               : " + String.valueOf(total));
                     isEnough = true;
@@ -361,13 +360,13 @@ public class purchase {
             
             
             // Create data
-            String purch_code = "purch-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
+            String purch_code = "sale-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
             String date_now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            String [] field = {"pruch_user_id", "pruch_prod_id", "pruch_code", "purch_date", "purch_qty", "purch_price", "purch_total"};
+            String [] field = {"sale_user_id", "sale_prod_id", "sale_code", "sale_date", "sale_qty", "sale_price", "sale_total"};
             String [] data = {String.valueOf(auth.getId()), String.valueOf(prod_id), purch_code, date_now, String.valueOf(bought), String.valueOf(price), String.valueOf(total)};
             
             this.restoreStok(id);
-            pur.update(field, data, "purch_id", id);
+            sales.update(field, data, "sale_id", id);
             
             // Label
             out.println("Data berhasil di buat !");
@@ -383,7 +382,7 @@ public class purchase {
     {
         do
         {
-            pur.change_table();
+            sales.change_table();
             
             boolean isFind = false;
             String id = "";
@@ -399,7 +398,7 @@ public class purchase {
                 id = input.next();
                 
                 // Find data by id
-                crs = pur.select_join_where("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", " purch_id", id, " or pruch_code = '" + id + "' ");
+                crs = sales.select_join_where("*", " left join user on sale_user_id = user_id left join product on sale_prod_id = prod_id ", " sale_id", id, " or sale_code = '" + id + "' ");
                 
                 // Print data
                 this.print_data(crs);
@@ -416,11 +415,11 @@ public class purchase {
                     
                     if(this.select_menu == 1)
                     {
-                        crs = pur.select_where("*", "purch_id", id, " or pruch_code = '" + id + "' ");
+                        crs = sales.select_where("*", "sale_id", id, " or sale_code = '" + id + "' ");
                         
                         while(crs.next())
                         {
-                            id = crs.getString("purch_id");
+                            id = crs.getString("sale_id");
                         }
                         isFind = true;
                     }
@@ -446,7 +445,7 @@ public class purchase {
             this.restoreStok(id);
             
             // Delete data
-            pur.delete( "purch_id", id);
+            sales.delete( "sale_id", id);
             
             // Label
             out.println("Data berhasil di hapus ! \n");
@@ -462,15 +461,15 @@ public class purchase {
     {
         do
         {
-            pur.change_table();
+            sales.change_table();
             
             // Show data prodcut           
             out.println(" === Cari pembelian === ");
             out.print(" Cari : ");
             String value = input.next();
             
-            String like = " purch_id like '%"+value+"%' or user_name like '%"+value+"%' or prod_name like '%"+value+"%' or pruch_code like '%"+value+"%'";
-            crs = pur.select_join_like("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", like);
+            String like = " sale_id like '%"+value+"%' or user_name like '%"+value+"%' or prod_name like '%"+value+"%' or sale_code like '%"+value+"%'";
+            crs = sales.select_join_like("*", " left join user on sale_user_id = user_id left join product on sale_prod_id = prod_id ", like);
             
             this.i = 0;
             
@@ -489,9 +488,9 @@ public class purchase {
     {
         // Label
         out.println(" =====================================================================================================");
-        out.println(" |                                       List Pembelian                                              |");            
+        out.println(" |                                       List Penjualan                                              |");            
         out.println(" =====================================================================================================");
-        out.println(" | No |  Id  |  User  | Kode Pembelian |   Produk   |  Jumlah  |  Harga  |  Total Harga  |  Tanggal  |");
+        out.println(" | No |  Id  |  User  | Kode Penjualan |   Produk   |  Jumlah  |  Harga  |  Total Harga  |  Tanggal  |");
             
         while(crs.next())
         {
@@ -500,21 +499,21 @@ public class purchase {
             String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
             int length_id = "  Id  |".length();
             int length_user = "  User  |".length();
-            int length_code = " Kode Pembelian |".length();
+            int length_code = " Kode Penjualan |".length();
             int length_product = "   Produk   |".length();
             int length_qty = "  Jumlah  |".length();
             int length_price = "  Harga  |".length();
             int length_total = "  Total Harga  |".length();
             int length_date = "  Tanggal  |".length();
                 
-            String id = str.clear_string(crs.getString("purch_id"), length_id);
+            String id = str.clear_string(crs.getString("sale_id"), length_id);
             String name = str.clear_string(crs.getString("user_name"), length_user);
-            String code = str.clear_string(crs.getString("pruch_code"), length_code);
+            String code = str.clear_string(crs.getString("sale_code"), length_code);
             String prod = str.clear_string(crs.getString("prod_name"), length_product);
-            String qty = str.clear_string(crs.getString("purch_qty"), length_qty);
-            String price = str.clear_string(crs.getString("purch_price"), length_price);
-            String total = str.clear_string(crs.getString("purch_total"), length_total);
-            String date = str.clear_string(crs.getString("purch_date"), length_date);
+            String qty = str.clear_string(crs.getString("sale_qty"), length_qty);
+            String price = str.clear_string(crs.getString("sale_price"), length_price);
+            String total = str.clear_string(crs.getString("sale_total"), length_total);
+            String date = str.clear_string(crs.getString("sale_date"), length_date);
                 
             out.println(" | "+no+" |"+id+name+code+prod+qty+price+total+date);
         }
@@ -563,18 +562,18 @@ public class purchase {
     
     public void restoreStok(String id) throws Exception
     {
-        pur.change_table();
+        sales.change_table();
         
         int stok = 0, final_stok = 0;
         String product = "";
         
-        crs = pur.select_where("*", "purch_id", id, "");
+        crs = sales.select_where("*", "sale_id", id, "");
         
         // Get purchase data
         while(crs.next())
         {
-            product = crs.getString("pruch_prod_id");
-            stok = crs.getInt("purch_qty");
+            product = crs.getString("sale_prod_id");
+            stok = crs.getInt("sale_qty");
         }
         
         crs = prod.select_where("*", "prod_id", product, "");
@@ -582,7 +581,7 @@ public class purchase {
         // Get product data
         while(crs.next())
         {
-            final_stok = crs.getInt("prod_qty") - stok;
+            final_stok = crs.getInt("prod_qty") + stok;
         }
                 
         // Restore product stok
@@ -591,3 +590,4 @@ public class purchase {
         prod.update(field, data, "prod_id", product);
     }
 }
+    
