@@ -21,7 +21,7 @@ public class product {
     strings str = new strings();
     products prod = new products();
     menu menu = new menu();
-    Scanner input = new Scanner(System.in);
+    Scanner input = new Scanner(System.in).useDelimiter("\n");;
     CachedRowSet crs;
     public boolean exit = false;
     public int i, select_menu;
@@ -88,29 +88,8 @@ public class product {
             
             this.i = 0;
             
-            // Label            
-            out.println(" ======================================================");
-            out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
-            
-            while(crs.next())
-            {
-                this.i++;
-                    
-                String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
-                int length_id = "  Id  |".length();
-                int length_name = "   Nama Produk   |".length();
-                int length_price = "  Harga Produk  |".length();
-                int length_qty = "  Quantity  |".length();
-                
-                String id = str.clear_string(crs.getString("prod_id"), length_id);
-                String name = str.clear_string(crs.getString("prod_name"), length_name);
-                String price = str.clear_string(crs.getString("prod_price"), length_price);
-                String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
-                
-                out.println(" | "+no+" |"+id+name+price+qty);
-            }
-            
-            out.println(" ====================================================== \n");
+            // Print data
+            this.print_data(crs);
                 
             // Label
             out.println("Masukan sembarang angka untuk kembali !");
@@ -161,15 +140,58 @@ public class product {
         {
             prod.change_table();
             
+            boolean isFind = false;
             String nama;
             int price, qty, id;
             
             this.i = 0;
             
-            // Label            
-            out.println(" === Update product === ");
-            out.print(" Id Product      : "); 
-            id = input.nextInt();
+            // Find the data
+            do
+            {   
+                // Label            
+                out.println(" === Update product === ");
+                out.print(" Id Product      : "); 
+                id = input.nextInt();
+                
+                // Find data by id
+                crs = prod.select_where("*", "prod_id", String.valueOf(id), "");
+                
+                // Print data
+                this.print_data(crs);
+                
+                // Check is find or not
+                if(this.i > 0)
+                {
+                    this.i = 0;
+                    out.println("Apakah data ini yang ingin anda ubah ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        isFind = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Data tidak tidak di temukan !! \n");
+                    
+                    isFind = false;
+                }
+            }
+            while(!isFind);
+            
             out.print("\n Nama Product  : ");
             nama = input.next();
             out.print("\n Harga Product : ");
@@ -184,6 +206,7 @@ public class product {
             prod.update(field, data, "prod_id", String.valueOf(id));
             
             // Label
+            out.println("Data berhasil di ubah ! \n");
             out.println("Masukan sembarang angka untuk kembali ke menu product !");
             input.nextInt();
             
@@ -191,27 +214,71 @@ public class product {
         }
         while(!this.exit); 
     }
-     public void delete() throws Exception
+    
+    public void delete() throws Exception
     {
         do
         {
             prod.change_table();
             
+            boolean isFind = false;
             String nama;
             int price, qty, id;
             
             this.i = 0;
             
-            // Label            
-            out.println(" === Delete product === ");
-            out.print(" Id Product      : "); 
-            id = input.nextInt();
+            // Find the data
+            do
+            {   
+                // Label            
+                out.println(" === Delete product === ");
+                out.print(" Id Product      : "); 
+                id = input.nextInt();
+                
+                // Find data by id
+                crs = prod.select_where("*", "prod_id", String.valueOf(id), "");
+                
+                // Print data
+                this.print_data(crs);
+                
+                // Check is find or not
+                if(this.i > 0)
+                {
+                    this.i = 0;
+                    out.println("Apakah data ini yang ingin anda hapus ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        isFind = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Data tidak tidak di temukan !! \n");
+                    
+                    isFind = false;
+                }
+            }
+            while(!isFind);
  
             
             // Create data
             prod.delete( "prod_id", String.valueOf(id));
             
             // Label
+            out.println("Data berhasil di hapus ! \n");
             out.println("Masukan sembarang angka untuk kembali ke menu product !");
             input.nextInt();
             
@@ -220,7 +287,7 @@ public class product {
         while(!this.exit); 
     }
      
-     public void search() throws Exception
+    public void search() throws Exception
     {
         do
         {
@@ -235,29 +302,8 @@ public class product {
             
             this.i = 0;
             
-            // Label            
-            out.println(" ======================================================");
-            out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
-            
-            while(crs.next())
-            {
-                this.i++;
-                    
-                String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
-                int length_id = "  Id  |".length();
-                int length_name = "   Nama Produk   |".length();
-                int length_price = "  Harga Produk  |".length();
-                int length_qty = "  Quantity  |".length();
-                
-                String id = str.clear_string(crs.getString("prod_id"), length_id);
-                String name = str.clear_string(crs.getString("prod_name"), length_name);
-                String price = str.clear_string(crs.getString("prod_price"), length_price);
-                String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
-                
-                out.println(" | "+no+" |"+id+name+price+qty);
-            }
-            
-            out.println(" ====================================================== \n");
+            // Print data
+            this.print_data(crs);
                 
             // Label
             out.println("Masukan sembarang angka untuk kembali !");
@@ -265,5 +311,34 @@ public class product {
             this.exit = true;
         }
         while(!this.exit);
+    }
+
+    public void print_data(CachedRowSet crs) throws Exception
+    {
+        // Label
+        out.println(" =============================================================");
+        out.println(" |                        List Produk                        |");            
+        out.println(" =============================================================");
+        out.println(" | No |  Id  |   Nama Produk   |  Harga Produk  |  Quantity  |");
+            
+        while(crs.next())
+        {
+            this.i++;
+                    
+            String no = this.i < 10 ? String.valueOf(this.i) + " " : String.valueOf(this.i);
+            int length_id = "  Id  |".length();
+            int length_name = "   Nama Produk   |".length();
+            int length_price = "  Harga Produk  |".length();
+            int length_qty = "  Quantity  |".length();
+                
+            String id = str.clear_string(crs.getString("prod_id"), length_id);
+            String name = str.clear_string(crs.getString("prod_name"), length_name);
+            String price = str.clear_string(crs.getString("prod_price"), length_price);
+            String qty = str.clear_string(crs.getString("prod_qty"), length_qty);
+                
+            out.println(" | "+no+" |"+id+name+price+qty);
+        }
+            
+        out.println(" ============================================================= \n");
     }
 }

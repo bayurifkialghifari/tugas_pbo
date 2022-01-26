@@ -43,7 +43,10 @@ public class Main {
                 i = 0;
                 
                 // Label
-                out.println("Silakan pilih salah satu menu yang ada di bawah ini");
+                out.println("+-----------------------------------------------------+");
+                out.println("+ ----------- SISTEM MANAGEMENT PENJUALAN ----------- +");
+                out.println("+ Silakan pilih salah satu menu yang ada di bawah ini +");
+                out.println("+-----------------------------------------------------+ \n");
                 
                 while(crs.next())
                 {
