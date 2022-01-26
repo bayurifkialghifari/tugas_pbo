@@ -275,7 +275,7 @@ public class ORM extends Connection {
         }
     }
     
-    public CachedRowSet select_join_where(String select, String join, String where, String value_where) throws SQLException
+    public CachedRowSet select_join_where(String select, String join, String where, String value_where, String optional) throws SQLException
     {
         this.connect();
         
@@ -283,7 +283,7 @@ public class ORM extends Connection {
         
         try
         {            
-            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where "+where+" = '"+value_where+"'";
+            this.sql_builder = "select "+select+" from "+this.get_table()+" "+join+" where "+where+" = '"+value_where+"' " + optional;
             
             // Create statement       
             this.st = this.conn.createStatement();

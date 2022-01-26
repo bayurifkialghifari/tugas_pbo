@@ -190,7 +190,7 @@ public class purchase {
                 }
                 else
                 {
-                    this.check_qty(prod_id, qty - bought);
+                    this.check_qty(prod_id, qty + bought);
                     
                     out.println("\n Total harga               : " + String.valueOf(total));
                     isEnough = true;
@@ -206,6 +206,168 @@ public class purchase {
             String [] data = {String.valueOf(auth.getId()), String.valueOf(prod_id), purch_code, date_now, String.valueOf(bought), String.valueOf(price), String.valueOf(total)};
             
             pur.insert(field, data);
+            
+            // Label
+            out.println("Data berhasil di buat !");
+            out.println("Masukan sembarang angka untuk kembali ke menu product !");
+            input.nextInt();
+            
+            this.exit = true;
+        }
+        while(!this.exit);
+    }
+    
+    public void update() throws Exception
+    {
+        do
+        {
+            prod.change_table();
+            pur.change_table();
+            
+            boolean isFind1 = false;
+            boolean isFind2 = false;
+            boolean isEnough = false;
+            String product, product_name = "", code, date, id = "";
+            int prod_id = 0, price = 0, qty = 0, bought = 0,total = 0;
+            
+            this.i = 0;
+            
+            do
+            {
+                // Label            
+                out.println(" === Ubah pembelian === ");
+                out.print(" Id / Kode Pembelian       : "); 
+                id = input.next();
+                
+                crs = pur.select_join_where("*", " left join user on pruch_user_id = user_id left join product on pruch_prod_id = prod_id ", "purch_id", id, " or pruch_code = '" + id + "' ");
+                
+                this.print_data(crs);
+                
+                // Check is find or not
+                if(this.i > 0)
+                {
+                    crs = pur.select_where("*", "purch_id", id, " or pruch_code = '" + id + "' ");
+                    
+                    while(crs.next())
+                    {
+                        id = crs.getString("purch_id");
+                    }
+                    
+                    this.i = 0;
+                    out.println("Apakah data ini yang ingin anda ubah ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        isFind1 = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind1 = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Data tidak tidak di temukan !! \n");
+                    
+                    isFind1 = false;
+                }
+            }
+            while(!isFind1);
+            
+            do
+            {
+                out.print("\n Id Product / Nama Produk  : ");
+                product = input.next();
+                
+                crs = prod.select_where("*", "prod_id", product, " or prod_name = '" + product + "'");
+                
+                while(crs.next())
+                {
+                    this.i++;
+                    
+                    prod_id = crs.getInt("prod_id");
+                    product_name = crs.getString("prod_name");
+                    price = crs.getInt("prod_price");
+                    qty = crs.getInt("prod_qty");
+                }
+                
+                if(this.i > 0)
+                {
+                    crs = prod.select_where("*", "prod_id", product, " or prod_name = '" + product + "'");
+                    this.print_product(crs);
+                    
+                    this.i = 0;
+                    out.println("Apakah produk ini yang anda maksud ? Masukan 1 untuk benar dan sembarang angka untuk tidak !");
+                    out.println("Pilihan anda ?");
+                    
+                    // Select menu
+                    this.select_menu = input.nextInt();
+                    
+                    if(this.select_menu == 1)
+                    {
+                        isFind2 = true;
+                    }
+                    else
+                    {
+                        out.cls();
+                        isFind2 = false;
+                    }
+                }
+                else
+                {
+                    this.i = 0;
+                    out.cls();
+                    
+                    out.println("Product tidak tidak di temukan !! \n");
+                    
+                    isFind2 = false;
+                }
+            }
+            while(!isFind2);
+            
+            // Cukup
+            do
+            {
+                out.print("\n Product Name              : " + product_name);
+                out.print("\n Harga Produk              : " + String.valueOf(price));
+                out.print("\n Stok Tersedia             : " + String.valueOf(qty));
+                out.print("\n Yang ingin di beli        : ");
+                bought = input.nextInt();
+                total = bought * price; 
+                
+                if(bought > qty)
+                {
+                    out.println("Stok produk tidak cukup !! Masukan angka sesuai stok yang ada");
+                    
+                    isEnough = false;
+                }
+                else
+                {
+                    this.check_qty(prod_id, qty + bought);
+                    
+                    out.println("\n Total harga               : " + String.valueOf(total));
+                    isEnough = true;
+                }
+            }
+            while(!isEnough);
+            
+            
+            // Create data
+            String purch_code = "purch-" + new SimpleDateFormat("HH-mm-ss").format(new Date());
+            String date_now = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            String [] field = {"pruch_user_id", "pruch_prod_id", "pruch_code", "purch_date", "purch_qty", "purch_price", "purch_total"};
+            String [] data = {String.valueOf(auth.getId()), String.valueOf(prod_id), purch_code, date_now, String.valueOf(bought), String.valueOf(price), String.valueOf(total)};
+            
+            this.restoreStok(id);
+            pur.update(field, data, "purch_id", id);
             
             // Label
             out.println("Data berhasil di buat !");
@@ -291,5 +453,33 @@ public class purchase {
         String [] data = {String.valueOf(stok)};
         
         prod.update(field, data, "prod_id", String.valueOf(id));
+    }
+    
+    public void restoreStok(String id) throws Exception
+    {
+        int stok = 0, final_stok = 0;
+        String product = "";
+        
+        crs = pur.select_where("*", "purch_id", id, "");
+        
+        // Get purchase data
+        while(crs.next())
+        {
+            product = crs.getString("pruch_prod_id");
+            stok = crs.getInt("purch_qty");
+        }
+        
+        crs = prod.select_where("*", "prod_id", product, "");
+        
+        // Get product data
+        while(crs.next())
+        {
+            final_stok = crs.getInt("prod_qty") - stok;
+        }
+                
+        // Restore product stok
+        String [] field = {"prod_qty"};
+        String [] data = {String.valueOf(final_stok)};
+        prod.update(field, data, "prod_id", product);
     }
 }
