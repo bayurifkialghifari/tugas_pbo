@@ -38,7 +38,7 @@ public class Main {
             if(!auth.isLoggedIn)
             {
                 // Show login and register menu                
-                crs = menu.select_where("*", "menu_menu_id", "0", "and menu_class != 'home'");
+                crs = menu.select_where("*", "menu_class", "auth", "and menu_class != 'home'");
                 
                 i = 0;
                 
