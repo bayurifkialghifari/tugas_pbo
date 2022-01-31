@@ -165,7 +165,7 @@ public class purchase {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Product tidak tidak di temukan !! \n");
+                    out.println("Product tidak di temukan !! \n");
                     
                     isFind = false;
                 }
@@ -275,7 +275,7 @@ public class purchase {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Data tidak tidak di temukan !! \n");
+                    out.println("Data tidak di temukan !! \n");
                     
                     isFind1 = false;
                 }
@@ -326,7 +326,7 @@ public class purchase {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Product tidak tidak di temukan !! \n");
+                    out.println("Product tidak di temukan !! \n");
                     
                     isFind2 = false;
                 }
@@ -435,7 +435,7 @@ public class purchase {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Data tidak tidak di temukan !! \n");
+                    out.println("Data tidak di temukan !! \n");
                     
                     isFind = false;
                 }

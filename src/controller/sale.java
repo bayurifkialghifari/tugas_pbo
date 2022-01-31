@@ -164,7 +164,7 @@ public class sale {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Product tidak tidak di temukan !! \n");
+                    out.println("Product tidak di temukan !! \n");
                     
                     isFind = false;
                 }
@@ -234,8 +234,8 @@ public class sale {
             do
             {
                 // Label            
-                out.println(" === Ubah pembelian === ");
-                out.print(" Id / Kode Pembelian       : "); 
+                out.println(" === Ubah penjualan === ");
+                out.print(" Id / Kode Penjualan       : "); 
                 id = input.next();
                 
                 crs = sales.select_join_where("*", " left join user on sale_user_id = user_id left join product on sale_prod_id = prod_id ", "sale_id", id, " or sale_code = '" + id + "' ");
@@ -274,7 +274,7 @@ public class sale {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Data tidak tidak di temukan !! \n");
+                    out.println("Data tidak di temukan !! \n");
                     
                     isFind1 = false;
                 }
@@ -325,7 +325,7 @@ public class sale {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Product tidak tidak di temukan !! \n");
+                    out.println("Product tidak di temukan !! \n");
                     
                     isFind2 = false;
                 }
@@ -434,7 +434,7 @@ public class sale {
                     this.i = 0;
                     out.cls();
                     
-                    out.println("Data tidak tidak di temukan !! \n");
+                    out.println("Data tidak di temukan !! \n");
                     
                     isFind = false;
                 }
@@ -449,7 +449,7 @@ public class sale {
             
             // Label
             out.println("Data berhasil di hapus ! \n");
-            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
+            out.println("Masukan sembarang angka untuk kembali ke menu penjualan !");
             input.nextInt();
             
             this.exit = true;
