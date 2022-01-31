@@ -370,7 +370,7 @@ public class sale {
             
             // Label
             out.println("Data berhasil di buat !");
-            out.println("Masukan sembarang angka untuk kembali ke menu pembelian !");
+            out.println("Masukan sembarang angka untuk kembali ke menu penjualan !");
             input.nextInt();
             
             this.exit = true;
@@ -393,8 +393,8 @@ public class sale {
             do
             {   
                 // Label            
-                out.println(" === Hapus Pembelian === ");
-                out.print(" Id / Kode Pembelian       : "); 
+                out.println(" === Hapus Penjualan === ");
+                out.print(" Id / Kode Penjualan       : "); 
                 id = input.next();
                 
                 // Find data by id
@@ -464,7 +464,7 @@ public class sale {
             sales.change_table();
             
             // Show data prodcut           
-            out.println(" === Cari pembelian === ");
+            out.println(" === Cari Penjualan === ");
             out.print(" Cari : ");
             String value = input.next();
             
